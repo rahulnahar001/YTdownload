@@ -137,6 +137,10 @@ select.disabled {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.cta.secondary {
+  background: #221f1b;
+}
+
 .cta:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 24px rgba(240, 93, 35, 0.3);
@@ -149,6 +153,58 @@ select.disabled {
   background: #fff1e4;
   border: 1px solid #f3d1bc;
   color: #a14016;
+}
+
+.divider {
+  height: 1px;
+  background: var(--stroke);
+  margin: 28px 0;
+}
+
+.metadata {
+  margin-top: 22px;
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--stroke);
+  background: #fffaf3;
+}
+
+.metadata h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.meta-row {
+  display: grid;
+  gap: 6px;
+}
+
+.meta-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.meta-value {
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff1e4;
+  border: 1px solid #f3d1bc;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .note {

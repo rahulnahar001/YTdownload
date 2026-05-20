@@ -31,6 +31,7 @@
               name="url"
               type="url"
               placeholder="https://www.youtube.com/watch?v=..."
+              value="{{ metadata_url or '' }}"
               required
             />
           </label>
@@ -60,6 +61,60 @@
 
           <button class="cta" type="submit">Download</button>
         </form>
+
+        <div class="divider"></div>
+
+        <form class="form" method="post" action="{{ url_for('metadata') }}">
+          <label class="field">
+            <span>Metadata URL</span>
+            <input
+              name="url"
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value="{{ metadata_url or '' }}"
+              required
+            />
+          </label>
+          <button class="cta secondary" type="submit">Check Metadata</button>
+        </form>
+
+        {% if metadata %}
+        <section class="metadata">
+          <h2>Video Metadata</h2>
+          <div class="meta-row">
+            <span class="meta-label">Title</span>
+            <span class="meta-value">{{ metadata.title }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Hashtags</span>
+            <span class="meta-value">
+              {% if metadata.hashtags %}
+                <span class="chips">
+                  {% for tag in metadata.hashtags %}
+                  <span class="chip">#{{ tag }}</span>
+                  {% endfor %}
+                </span>
+              {% else %}
+                None found
+              {% endif %}
+            </span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Tags</span>
+            <span class="meta-value">
+              {% if metadata.tags %}
+                <span class="chips">
+                  {% for tag in metadata.tags %}
+                  <span class="chip">{{ tag }}</span>
+                  {% endfor %}
+                </span>
+              {% else %}
+                None found
+              {% endif %}
+            </span>
+          </div>
+        </section>
+        {% endif %}
 
         {% with messages = get_flashed_messages() %}
         {% if messages %}

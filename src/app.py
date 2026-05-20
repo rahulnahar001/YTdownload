@@ -10,6 +10,35 @@ def _sanitize_filename(name):
     return cleaned or "video"
 
 
+def get_video_metadata(url):
+    ydl_opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "noplaylist": True,
+    }
+
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+    except DownloadError as exc:
+        raise ValueError("YouTube returned an HTTP error or blocked the request.") from exc
+    except Exception as exc:
+        raise ValueError("Invalid or unavailable URL.") from exc
+
+    title = info.get("title") or ""
+    tags = info.get("tags") or []
+    description = info.get("description") or ""
+
+    hashtag_candidates = " ".join([title, description])
+    hashtags = sorted({tag for tag in re.findall(r"#([A-Za-z0-9_]+)", hashtag_candidates)})
+
+    return {
+        "title": title,
+        "tags": tags,
+        "hashtags": hashtags,
+    }
+
+
 def download_video(url, file_type, quality, output_dir="downloads"):
     if file_type not in {"mp3", "mp4"}:
         raise ValueError("Invalid file type selected. Please choose 'mp3' or 'mp4'.")

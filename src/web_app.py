@@ -4,7 +4,7 @@ import tempfile
 
 from flask import Flask, after_this_request, flash, redirect, render_template, request, send_file, url_for
 
-from app import download_video
+from app import download_video, get_video_metadata
 
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret")
 
 @app.get("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", metadata=None, metadata_url="")
 
 
 @app.post("/download")
@@ -40,6 +40,23 @@ def download():
         return response
 
     return send_file(file_path, as_attachment=True, download_name=filename)
+
+
+@app.post("/metadata")
+def metadata():
+    url = request.form.get("url", "").strip()
+
+    if not url:
+        flash("Please provide a YouTube URL.")
+        return redirect(url_for("index"))
+
+    try:
+        metadata = get_video_metadata(url)
+    except ValueError as exc:
+        flash(str(exc))
+        return render_template("index.html", metadata=None, metadata_url=url)
+
+    return render_template("index.html", metadata=metadata, metadata_url=url)
 
 
 if __name__ == "__main__":
