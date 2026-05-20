@@ -1,0 +1,21 @@
+[tool]
+name = "youtube-video-downloader"
+version = "0.1.0"
+description = "A YouTube video downloader application that allows users to download videos in MP3 or MP4 format with quality options."
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytube = "^10.0.0"
+click = "^8.0.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.0.0"
+
+[tool.poetry.scripts]
+youtube-downloader = "src.cli:main"

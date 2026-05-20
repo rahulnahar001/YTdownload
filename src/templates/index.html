@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube Video Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="hero-badge">Web Downloader</div>
+        <h1>Download YouTube videos with a clean, fast web UI.</h1>
+        <p>
+          Paste a link, pick MP4 or audio-only, choose quality, and grab the file right in your
+          browser.
+        </p>
+      </header>
+
+      <main class="card">
+        <form class="form" method="post" action="{{ url_for('download') }}">
+          <label class="field">
+            <span>Video URL</span>
+            <input
+              name="url"
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              required
+            />
+          </label>
+
+          <div class="grid">
+            <label class="field">
+              <span>File type</span>
+              <select name="file_type" id="fileType">
+                <option value="mp4" selected>MP4 Video</option>
+                <option value="mp3">Audio Only (best available)</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Quality</span>
+              <select name="quality" id="quality">
+                <option value="">Select quality</option>
+                <option value="144p">144p</option>
+                <option value="240p">240p</option>
+                <option value="360p">360p</option>
+                <option value="480p">480p</option>
+                <option value="720p">720p</option>
+                <option value="1080p">1080p</option>
+              </select>
+            </label>
+          </div>
+
+          <button class="cta" type="submit">Download</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash">
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="note">
+          Audio-only downloads use the best available stream and may not be a true MP3 file.
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const fileType = document.getElementById("fileType");
+      const quality = document.getElementById("quality");
+
+      const toggleQuality = () => {
+        const isAudioOnly = fileType.value === "mp3";
+        quality.disabled = isAudioOnly;
+        quality.classList.toggle("disabled", isAudioOnly);
+        if (isAudioOnly) {
+          quality.value = "";
+        }
+      };
+
+      fileType.addEventListener("change", toggleQuality);
+      toggleQuality();
+    </script>
+  </body>
+</html>
